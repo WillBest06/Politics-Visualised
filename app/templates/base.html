@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{% block title %} Politics: Visualised {% endblock %}</title>
+
+    <!-- <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" /> -->
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+      defer
+    ></script>
+
+    <!-- <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    /> -->
+  </head>
+  <body class="min-vh-100">
+    <header class="p-3 mb-3 border-bottom sticky-top bg-white">
+      <div
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+      >
+        <!-- <img src="{{ url_for('static', filename='blogchain.svg') }}" width="64" height="64"></img> -->
+        <h1><span>Politics: </span> <span>Visualised</span></h1>
+
+        <ul
+          class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+        >
+          <li>
+            <a href="/petitions" class="nav-link px-2 link-secondary text-dark"
+              >Petitions</a
+            >
+          </li>
+        </ul>
+      </div>
+    </header>
+    <main class="p-4">{% block content %} {% endblock %}</main>
+  </body>
+</html>

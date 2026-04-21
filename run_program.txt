@@ -1,0 +1,15 @@
+python3 -m venv venv &&
+source venv/bin/activate &&
+pip install pytest pytest-flask pytest-cov &&
+pip install -r requirements.txt &&
+
+export FLASK_APP=app &&
+export FLASK_DEBUG=1 &&
+flask run
+
+python3 -m venv venv &&
+source venv/bin/activate &&
+pip install pytest pytest-flask pytest-cov &&
+pip install -r requirements.txt &&
+
+python -m pytest --cov=app --cov-report=html
