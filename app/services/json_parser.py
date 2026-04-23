@@ -1,4 +1,5 @@
 import json
+import arrow
 
 def main_parser(raw_json):
     file = json.loads(raw_json)
@@ -17,8 +18,16 @@ def extract_metadata(file):
         'id': file['data']['id'],
         'title': attributes['action'],
         'state': attributes['state'],
+        'background': attributes['background'],
+        'additional_details': attributes['additional_details'],
         'signature_count': attributes['signature_count'],
-        'created_at': attributes['created_at'],
+        'dates': {
+            'created_at': format_date(attributes.get('created_at')),
+            'response_threshold_reached_at': format_date(attributes.get('response_threshold_reached_at')),
+            'government_response_at': format_date(attributes.get('government_response_at')),
+            'debate_threshold_reached_at': format_date(attributes.get('debate_threshold_reached_at')),
+            'scheduled_debate_date': format_date(attributes.get('scheduled_debate_date')),
+        },
         'departments': attributes['departments']
     }
 
@@ -57,7 +66,6 @@ def extract_regions_data(file):
         'labels': labels,
         'values': values
     }
-
     
 def extract_constituencies_data(file):
     constituencies = file['data']['attributes']['signatures_by_constituency']
@@ -77,3 +85,15 @@ def extract_constituencies_data(file):
         'labels': labels,
         'values': values
     }
+
+def format_date(iso_string):
+    if not iso_string:
+        return "N/A"
+    
+    try:
+        dateObject = arrow.get(iso_string)
+        
+        return dateObject.format('D MMMM YYYY')
+        
+    except Exception:
+        return "N/A"

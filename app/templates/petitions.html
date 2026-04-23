@@ -1,33 +1,62 @@
 {% extends "base.html" %} {% block title %}Petitions{% endblock %} {% block
-content %}
-
-<a href="{{url_for('petitions.upload')}}">Upload a new file</a>
-<a href="">View previously saved petitions</a>
-
-{% if option == "upload" %}
+content %} {% if option == "upload" %}
 <form method="POST" enctype="multipart/form-data">
   {{ form.csrf_token }} {{ form.json_file.label }} {{
   form.json_file(class_="form-control") }} {{ form.submit() }}
 </form>
 {% endif %} {% if option == "visualise" and data %}
 <div>
-  <h1>Petition Data Visualiser</h1>
+  <h2>{{ data.metadata.title }}</h2>
+  <p>{{ data.metadata.background }}</p>
 
-  <section class="container">
-    <div class="row">
-      <div class="col">
-        <h2>Key dates</h2>
-        <p>Created:</p>
-        <p>Response threshold reached:</p>
-        <p>Government response:</p>
-        <p>Debate threshold reached:</p>
-        <p>Scheduled debate date:</p>
+  <section class="container gap-5 d-flex flex-column align-items-center">
+    <div class="align-self-start">
+      <p class="d-inline-flex gap-1 mb-0">
+        <button
+          class="btn dropdown-toggle"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseExample"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+        >
+          More details
+        </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          <div>{{ data.metadata.additional_details }}</div>
+        </div>
       </div>
-      <div class="col"><canvas id="signatures_by_country"></canvas></div>
     </div>
 
-    <div class="row">
+    <div class="row gap-5 w-100">
+      <div class="col">
+        <h2>Key dates</h2>
+        <p>Created: {{ data.metadata.dates.created_at }}</p>
+        <p>
+          Response threshold reached: {{
+          data.metadata.dates.response_threshold_reached_at }}
+        </p>
+        <p>
+          Debate threshold reached: {{
+          data.metadata.dates.debate_threshold_reached_at }}
+        </p>
+        <p>
+          Government response: {{ data.metadata.dates.government_response_at }}
+        </p>
+        <p>
+          Scheduled debate date: {{ data.metadata.dates.scheduled_debate_date }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row gap-5 w-100">
+      <div class="col"><canvas id="signatures_by_country"></canvas></div>
       <div class="col"><canvas id="signatures_by_constituency"></canvas></div>
+    </div>
+
+    <div class="row gap-5 w-50">
       <div class="col"><canvas id="signatures_by_region"></canvas></div>
     </div>
   </section>

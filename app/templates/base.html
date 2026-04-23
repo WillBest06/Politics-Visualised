@@ -6,7 +6,7 @@
 
     <title>{% block title %} Politics: Visualised {% endblock %}</title>
 
-    <!-- <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" /> -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -33,29 +33,49 @@
       href="{{ url_for('static', filename='style.css') }}"
     />
   </head>
-  <body class="min-vh-100">
-    <header class="p-3 mb-3 border-bottom sticky-top bg-white">
+  <body class="min-vh-100 d-flex flex-column align-items-center">
+    <header class="p-3 w-75 sticky-top bg-white">
       <div
-        class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        class="d-flex flex-column flex-wrap align-items-center justify-content-center justify-content-lg-start"
       >
-        <!-- <img src="{{ url_for('static', filename='blogchain.svg') }}" width="64" height="64"></img> -->
         <h1>
           <span class="T-N-R-I">Politics: </span>
-          <span class="erica-one-regular">Visualised</span>
+          <span class="erica-one-regular diagonal-gradient">Visualised</span>
         </h1>
 
-        <ul
-          class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
-        >
-          <li>
-            <a href="/petitions" class="nav-link px-2 link-secondary text-dark"
-              >Petitions</a
-            >
-          </li>
-        </ul>
+        <nav class="border-bottom border-top w-100">
+          <ul
+            class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0"
+          >
+            <li>
+              <button
+                class="btn dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Petitions
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{{url_for('petitions.upload')}}"
+                    >Upload a new file</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href=""
+                    >View previously saved petitions</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
-    <main class="p-4">{% block content %} {% endblock %}</main>
+    <main class="p-4 w-75">{% block content %} {% endblock %}</main>
 
     {% block scripts %} {% endblock %}
   </body>

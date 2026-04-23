@@ -70,13 +70,16 @@ function render_doughnut_chart(canvasId, data) {
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: true, // Keeps it a circle
+      // This is the magic property to shrink the actual circle
+      // without shrinking the legend
+      layout: {
+        padding: 20,
+      },
       plugins: {
         legend: {
-          position: "right", // Moves the labels to the side of the chart
-        },
-        title: {
-          display: true,
-          text: data.graph_name,
+          position: "top",
         },
       },
     },
