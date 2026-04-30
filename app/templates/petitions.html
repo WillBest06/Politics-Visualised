@@ -1,67 +1,152 @@
 {% extends "base.html" %} {% block title %}Petitions{% endblock %} {% block
 content %} {% if option == "upload" %}
-<form method="POST" enctype="multipart/form-data">
-  {{ form.csrf_token }} {{ form.json_file.label }} {{
-  form.json_file(class_="form-control") }} {{ form.submit() }}
-</form>
+<div class="row justify-content-center">
+  <div class="col-md-6 card p-4 shadow-sm">
+    <h2 class="mb-3">Upload Petition Data</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <div class="mb-3">
+        {{ form.json_file.label(class="form-label") }} {{
+        form.json_file(class_="form-control") }}
+      </div>
+      {{ form.submit(class="btn btn-primary w-100") }}
+    </form>
+  </div>
+</div>
 {% endif %} {% if option == "visualise" and data %}
-<div>
-  <h2>{{ data.metadata.title }}</h2>
-  <p>{{ data.metadata.background }}</p>
+<div class="container-fluid py-4">
+  <!-- Petition title and background -->
+  <div class="row mb-4">
+    <div class="col-12 text-center text-md-start">
+      <h2 class="display-6 font-weight-bold">{{ data.metadata.title }}</h2>
+      <p class="lead text-muted">{{ data.metadata.background }}</p>
+    </div>
+  </div>
 
-  <section class="container gap-5 d-flex flex-column align-items-center">
-    <div class="align-self-start">
-      <p class="d-inline-flex gap-1 mb-0">
-        <button
-          class="btn dropdown-toggle"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseExample"
-          aria-expanded="false"
-          aria-controls="collapseExample"
-        >
-          More details
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-          <div>{{ data.metadata.additional_details }}</div>
+  <!-- More details -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <button
+        class="btn btn-outline-secondary dropdown-toggle"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseDetails"
+      >
+        More Details
+      </button>
+      <div class="collapse mt-3" id="collapseDetails">
+        <div class="card card-body bg-light">
+          {{ data.metadata.additional_details }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts grid -->
+  <div class="row g-4">
+    <!-- Key dates -->
+    <div class="col-12 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title h4 border-bottom pb-2">Key Dates</h3>
+          <ul class="list-unstyled mt-3">
+            <li class="mb-2">
+              <strong>Created:</strong>
+              <span class="float-end"
+                >{{ data.metadata.dates.created_at }}</span
+              >
+            </li>
+            <li class="mb-2">
+              <strong>Response threshold:</strong>
+              <span class="float-end"
+                >{{ data.metadata.dates.response_threshold_reached_at }}</span
+              >
+            </li>
+            <li class="mb-2">
+              <strong>Debate threshold:</strong>
+              <span class="float-end"
+                >{{ data.metadata.dates.debate_threshold_reached_at }}</span
+              >
+            </li>
+            <li class="mb-2">
+              <strong>Gov Response:</strong>
+              <span class="float-end"
+                >{{ data.metadata.dates.government_response_at }}</span
+              >
+            </li>
+            <li class="mb-2">
+              <strong>Scheduled Debate:</strong>
+              <span class="float-end"
+                >{{ data.metadata.dates.scheduled_debate_date }}</span
+              >
+            </li>
+          </ul>
         </div>
       </div>
     </div>
 
-    <div class="row gap-5 w-100">
-      <div class="col">
-        <h2>Key dates</h2>
-        <p>Created: {{ data.metadata.dates.created_at }}</p>
-        <p>
-          Response threshold reached: {{
-          data.metadata.dates.response_threshold_reached_at }}
-        </p>
-        <p>
-          Debate threshold reached: {{
-          data.metadata.dates.debate_threshold_reached_at }}
-        </p>
-        <p>
-          Government response: {{ data.metadata.dates.government_response_at }}
-        </p>
-        <p>
-          Scheduled debate date: {{ data.metadata.dates.scheduled_debate_date }}
-        </p>
+    <!-- Government response -->
+    <div class="col-12 col-lg-8">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title h4 border-bottom pb-2">Government Response</h3>
+          <div class="mt-3" style="max-height: 250px; overflow-y: auto">
+            {% if data.metadata.government_response %}
+            <p class="text-secondary">
+              This response was given on {{
+              data.metadata.government_response.responded_on }}
+            </p>
+            <p>"{{ data.metadata.government_response.summary }}"</p>
+            <hr />
+            <p>{{ data.metadata.government_response.details }}</p>
+            {% else %}
+            <p class="text-muted fst-italic">
+              The government has not yet responded to this petition.
+            </p>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="row gap-5 w-100">
-      <div class="col"><canvas id="signatures_by_country"></canvas></div>
-      <div class="col"><canvas id="signatures_by_constituency"></canvas></div>
+  <!-- Bar charts -->
+  <div class="row g-4 mt-2">
+    <div class="col-12 col-xl-6">
+      <div class="card shadow-sm p-3">
+        <h3 class="h5">Signatures by Country (Logarithmic)</h3>
+        <canvas id="signatures_by_country"></canvas>
+      </div>
     </div>
+    <div class="col-12 col-xl-6">
+      <div class="card shadow-sm p-3">
+        <h3 class="h5">Top 10 Constituencies</h3>
+        <canvas id="signatures_by_constituency"></canvas>
+      </div>
+    </div>
+  </div>
 
-    <div class="row gap-5 w-50">
-      <div class="col"><canvas id="signatures_by_region"></canvas></div>
+  <!-- Doughnut chart -->
+  <div class="row g-4 mt-2">
+    <div class="col-12">
+      <div class="card shadow-sm p-3 p-md-4 w-100">
+        <h3 class="h5 mb-3 text-center">{{ data.regions.graph_name }}</h3>
+        <div
+          class="d-flex justify-content-center align-items-center"
+          style="min-height: 450px"
+        >
+          <div
+            class="chart-container"
+            style="position: relative; width: 100%; max-width: 450px"
+          >
+            <canvas id="signatures_by_region"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
 </div>
-{% endif %} {% block script %}
+{% endif %} {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='charts.js') }}"></script>
 <script>

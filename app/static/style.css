@@ -23,3 +23,21 @@
   background-clip: text;
   color: transparent;
 }
+
+.chart-container {
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .chart-container {
+    height: auto !important;
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 768px) {
+  .chart-container {
+    max-width: 450px;
+    height: 450px;
+  }
+}

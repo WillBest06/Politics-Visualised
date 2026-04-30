@@ -13,6 +13,15 @@ def main_parser(raw_json):
 
 def extract_metadata(file):
     attributes = file['data']['attributes']
+    gov_response = attributes.get('government_response')
+
+    response_data = None
+    if gov_response:
+        response_data = {
+            'responded_on': format_date(gov_response.get('responded_on')),
+            'summary': gov_response.get('summary'),
+            'details': gov_response.get('details'),
+        }
 
     return {
         'id': file['data']['id'],
@@ -28,7 +37,8 @@ def extract_metadata(file):
             'debate_threshold_reached_at': format_date(attributes.get('debate_threshold_reached_at')),
             'scheduled_debate_date': format_date(attributes.get('scheduled_debate_date')),
         },
-        'departments': attributes['departments']
+        'departments': attributes['departments'],
+        'government_response': response_data
     }
 
 def extract_country_data(file):
