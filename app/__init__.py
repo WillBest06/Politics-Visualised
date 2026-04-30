@@ -11,6 +11,8 @@ def create_app(test_config=None):
     csrf = CSRFProtect(app) 
 
     from .routes.petitions import petitions_bp
+    from .routes.home import home_bp
     app.register_blueprint(petitions_bp)
+    app.register_blueprint(home_bp)
 
     return app
