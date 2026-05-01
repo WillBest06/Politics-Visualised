@@ -102,3 +102,34 @@ a.nostyle:visited {
   color: inherit;
   cursor: pointer;
 }
+
+/* bigger header on desktop */
+@media (min-width: 992px) {
+  .nav-title {
+    font-size: 3rem;
+    transition: font-size 0.3s ease;
+  }
+}
+
+/* smaller header on  mobile */
+@media (max-width: 991px) {
+  .nav-title {
+    font-size: 1.5rem;
+  }
+
+  /* logo centred */
+  .navbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto !important;
+  }
+}
+
+/* nav links  */
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
