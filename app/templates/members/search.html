@@ -1,0 +1,43 @@
+{% extends "members.html" %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 card p-4 shadow-sm">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <div class="mb-3 btn-group w-100" role="group">
+        {% for subfield in form.search_type %} {{ subfield(class="btn-check") }}
+        {{ subfield.label(class="btn btn-outline-primary") }} {% endfor %}
+      </div>
+      <div class="mb-3">
+        {{ form.search_field.label(class="form-label", id="search-label") }} {{
+        form.search_field(class_="form-control", id="search-input") }}
+      </div>
+      {{ form.submit(class="btn btn-primary w-100") }}
+    </form>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const nameRadio = document.getElementById("search_type-0");
+    const locationRadio = document.getElementById("search_type-1");
+    const label = document.getElementById("search-label");
+    const input = document.getElementById("search-input");
+
+    function updateFields() {
+      if (locationRadio.checked) {
+        label.textContent = "Search by Location or Postcode";
+        input.placeholder = "e.g. TR1 3XX or Truro";
+      } else {
+        label.textContent = "Search by MP Name";
+        input.placeholder = "e.g. Keir Starmer";
+      }
+    }
+
+    updateFields();
+    if (nameRadio && locationRadio) {
+      nameRadio.addEventListener("change", updateFields);
+      locationRadio.addEventListener("change", updateFields);
+    }
+  });
+</script>
+{% endblock %}
