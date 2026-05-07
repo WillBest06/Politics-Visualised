@@ -1,0 +1,10 @@
+{% from "macros.html" import members_list with context %} {% extends
+"members/search.html" %} {% block title %} Results {% endblock %} {% block
+results_area %} {% if resultContext %}
+<h1>{{ totalResults }} {{ resultContext }}</h1>
+{% elif not resultContext and members %}
+<h1>{{ totalResults }} Result(s)</h1>
+{% else %}
+<h1>No results</h1>
+{% endif %} {% if members %} {{ members_list(members) }} {% endif %}{% endblock
+%}

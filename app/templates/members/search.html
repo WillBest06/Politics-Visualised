@@ -1,25 +1,29 @@
-{% extends "members.html" %} {% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-6 card p-4 shadow-sm">
-    <form method="POST">
-      {{ form.hidden_tag() }}
+    <form method="GET" action="{{ url_for('members.search') }}">
       <div class="mb-3 btn-group w-100" role="group">
-        {% for subfield in form.search_type %} {{ subfield(class="btn-check") }}
-        {{ subfield.label(class="btn btn-outline-primary") }} {% endfor %}
+        {% for subfield in form.t %} {{ subfield(class="btn-check") }} {{
+        subfield.label(class="btn btn-outline-primary") }} {% endfor %}
       </div>
+
       <div class="mb-3">
-        {{ form.search_field.label(class="form-label", id="search-label") }} {{
-        form.search_field(class_="form-control", id="search-input") }}
+        {{ form.q.label(class="form-label", id="search-label") }} {{
+        form.q(class_="form-control", id="search-input") }}
       </div>
-      {{ form.submit(class="btn btn-primary w-100") }}
+
+      <button type="submit" class="btn btn-primary w-100">Search</button>
     </form>
   </div>
 </div>
+
+<div class="mt-5">{% block results_area %}{% endblock %}</div>
 {% endblock %} {% block scripts %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const nameRadio = document.getElementById("search_type-0");
-    const locationRadio = document.getElementById("search_type-1");
+    const nameRadio = document.getElementById("t-0");
+    const locationRadio = document.getElementById("t-1");
+
     const label = document.getElementById("search-label");
     const input = document.getElementById("search-input");
 
@@ -34,6 +38,7 @@
     }
 
     updateFields();
+
     if (nameRadio && locationRadio) {
       nameRadio.addEventListener("change", updateFields);
       locationRadio.addEventListener("change", updateFields);

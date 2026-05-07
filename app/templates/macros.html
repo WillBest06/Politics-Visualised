@@ -1,0 +1,52 @@
+{% macro members_list(members) %}
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <ul class="list-group shadow-sm">
+        {% for member in members %}
+        <li
+          class="list-group-item list-group-item-action p-3 position-relative"
+        >
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0 me-4">
+              <img
+                src="{{ member.value.thumbnailUrl if member.value.thumbnailUrl else url_for('static', filename='images/default-avatar.png') }}"
+                class="rounded-circle border shadow-sm"
+                width="90"
+                height="90"
+                style="object-fit: cover"
+              />
+            </div>
+
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start">
+                <h3 class="h5 mb-1 fw-bold">
+                  {{ member.value.nameDisplayAs }}
+                </h3>
+                <i class="bi bi-arrow-right"></i>
+              </div>
+
+              <p class="mb-0 text-muted">
+                <i class="bi bi-people-fill me-1"></i> {{
+                member.value.latestParty.name }}
+              </p>
+              <p class="mb-0 text-muted">
+                <i class="bi bi-geo-alt-fill me-1"></i> {{
+                member.value.latestHouseMembership.membershipFrom }}
+              </p>
+            </div>
+          </div>
+
+          <a href="#" class="stretched-link"></a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endmacro %}
