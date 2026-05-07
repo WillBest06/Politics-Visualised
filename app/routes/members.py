@@ -30,7 +30,8 @@ def search():
                                    form=form, 
                                    members=members_data, 
                                    totalResults=total_results,
-                                   resultContext=result_context
+                                   resultContext=result_context,
+                                   query=query
                                    )
 
     return render_template('members/search.html', form=form)

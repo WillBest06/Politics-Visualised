@@ -1,6 +1,8 @@
 {% extends "base.html" %} {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6 card p-4 shadow-sm">
+<div class="row justify-content-center px-2">
+  <div
+    class="col-12 col-md-10 col-lg-8 card p-3 p-md-4 shadow-sm border-0 bg-light"
+  >
     <form method="GET" action="{{ url_for('members.search') }}">
       <div class="mb-3 btn-group w-100" role="group">
         {% for subfield in form.t %} {{ subfield(class="btn-check") }} {{
@@ -8,16 +10,16 @@
       </div>
 
       <div class="mb-3">
-        {{ form.q.label(class="form-label", id="search-label") }} {{
-        form.q(class_="form-control", id="search-input") }}
+        {{ form.q.label(class="form-label fw-bold", id="search-label") }} {{
+        form.q(class_="form-control form-control-lg", id="search-input") }}
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">Search</button>
+      <button type="submit" class="btn btn-primary w-100 btn-lg">Search</button>
     </form>
   </div>
 </div>
 
-<div class="mt-5">{% block results_area %}{% endblock %}</div>
+<div>{% block results_area %}{% endblock %}</div>
 {% endblock %} {% block scripts %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
