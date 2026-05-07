@@ -15,4 +15,37 @@ with context %} {% block title %} Results {% endblock %} {% block results_area
   </div>
 </div>
 
-{% if members %} {{ members_list(members) }} {% endif %} {% endblock %}
+{% if members %} {{ members_list(members) }} {% endif %} {% if total_pages > 1
+%}
+<div class="d-flex flex-column align-items-center mt-5 mb-5 px-2">
+  <nav aria-label="Member search pagination">
+    <ul class="pagination pagination-md mb-2 shadow-sm">
+      <li class="page-item {% if current_page <= 1 %}disabled{% endif %}">
+        <a
+          class="page-link text-primary px-4"
+          href="{{ url_for('members.search', t=request.args.get('t'), q=request.args.get('q'), page=current_page - 1) }}"
+          aria-label="Previous"
+        >
+          <span aria-hidden="true">&laquo; Previous</span>
+        </a>
+      </li>
+
+      <li
+        class="page-item {% if current_page >= total_pages %}disabled{% endif %}"
+      >
+        <a
+          class="page-link text-primary px-4"
+          href="{{ url_for('members.search', t=request.args.get('t'), q=request.args.get('q'), page=current_page + 1) }}"
+          aria-label="Next"
+        >
+          <span aria-hidden="true">Next &raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <span class="text-muted small"
+    >Page {{ current_page }} of {{ total_pages }}</span
+  >
+</div>
+{% endif %} {% endblock %}
