@@ -1,6 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request
 import requests
 import math
+import time
+import concurrent.futures
+import requests_cache
+
+# caches get requests for 24hrs
+requests_cache.install_cache('parliament_api_cache', expire_after=86400)
+
+http_session = requests.Session()
 
 members_bp = Blueprint("members", __name__)
 
@@ -20,7 +28,7 @@ def search():
         skip = (page - 1) * take 
         
         api_url = f'https://members-api.parliament.uk/api/Members/Search?{search_type}={query}&skip={skip}&take={take}'
-        r = requests.get(api_url)
+        r = http_session.get(api_url)
         
         if r.status_code == 200:
             data = r.json()
@@ -40,12 +48,30 @@ def search():
 
 @members_bp.route('/profile/<int:member_id>', methods=['GET'])
 def profile(member_id):
-
     api_url = f'https://members-api.parliament.uk/api/Members/{member_id}'
-    member_data = requests.get(api_url).json()
-    synopsis = requests.get(api_url + "/Synopsis").json()
-    portrait = requests.get(api_url + "/PortraitUrl").json()
-    contact_info = requests.get(api_url + "/Contact").json()
-    biography = requests.get(api_url + "/Biography").json()
+
+    def fetch_json(url):
+        try:
+            return http_session.get(url, timeout=5).json()
+        except requests.exceptions.RequestException as e:
+            print(f"Could not fetch {url}: {e}")
+            return {}
+
+    # start_time = time.time()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        future_member = executor.submit(fetch_json, api_url)
+        future_synopsis = executor.submit(fetch_json, api_url + "/Synopsis")
+        future_portrait = executor.submit(fetch_json, api_url + "/PortraitUrl")
+        future_contact = executor.submit(fetch_json, api_url + "/Contact")
+        future_bio = executor.submit(fetch_json, api_url + "/Biography")
+
+        member_data = future_member.result()
+        synopsis = future_synopsis.result()
+        portrait = future_portrait.result()
+        contact_info = future_contact.result()
+        biography = future_bio.result()
+
+        # end_time = time.time()
+        # print(f"Fetched all JSON in {end_time - start_time:.2f} seconds")
     
     return render_template('members/profile.html', member=member_data, contactInfo=contact_info, biography=biography, portrait=portrait, synopsis=synopsis)
