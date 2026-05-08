@@ -5,23 +5,34 @@
 <div class="container my-5 px-2">
   <div class="row">
     <div class="col-12 col-md-4 col-lg-3 text-center text-md-start mb-4">
-      <div
-        class="card border-0 shadow-sm bg-white sticky-top"
-        style="top: 2rem; z-index: 1"
-      >
-        <img
-          src="{{ portrait.value }}"
-          class="card-img-top img-fluid"
-          alt="{{ member.value.nameDisplayAs | default('MP Photo') }}"
-        />
+      <div class="card border-0 shadow-sm bg-white">
+        <picture>
+          <source
+            media="(max-width: 767px)"
+            srcset="https://members-api.parliament.uk/api/Members/{{ member.value.id }}/Portrait?cropType=1&webVersion=true"
+          />
+
+          <img
+            src="https://members-api.parliament.uk/api/Members/{{ member.value.id }}/Portrait?webVersion=true"
+            class="card-img-top img-fluid rounded-top"
+            alt="{{ member.value.nameDisplayAs }}"
+            onerror="this.src='{{ url_for('static', filename='images/default-avatar.svg') }}'"
+          />
+        </picture>
 
         <div class="card-body text-center">
           <h4 class="card-title fw-bold text-dark">
-            {{ member.value.nameDisplayAs | default('MP Name') }}
+            {{ member.value.nameDisplayAs }}
           </h4>
-          <span class="badge rounded-pill bg-primary mb-2 px-3 py-2">
-            {{ member.value.latestParty.name | default('Party') }}
-          </span>
+
+          <div class="mb-3">
+            <span
+              class="badge rounded-pill px-3 py-2 party-{{ member.value.latestParty.name | lower | replace(' ', '-') | replace('(', '') | replace(')', '') }}"
+            >
+              {{ member.value.latestParty.name }}
+            </span>
+          </div>
+
           <p class="text-muted small mb-0 mt-2">
             <i class="bi bi-geo-alt-fill text-danger"></i>
             {{ member.value.latestHouseMembership.membershipFrom }}
@@ -58,7 +69,23 @@
             <div class="col-sm-4 fw-bold text-muted">House Start Date:</div>
             <div class="col-sm-8">
               {{ member.value.latestHouseMembership.membershipStartDate |
-              default('N/A') }}
+              truncate(10, True, '') }}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 fw-bold text-muted">House End Date:</div>
+            <div class="col-sm-8">
+              {% if member.value.latestHouseMembership.membershipEndDate %} {{
+              member.value.latestHouseMembership.membershipEndDate |
+              truncate(10, True, '') }} {% else %} N/A {% endif %}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 fw-bold text-muted">Reason for leaving:</div>
+            <div class="col-sm-8">
+              {{ member.value.latestHouseMembership.membershipEndReason }}
             </div>
           </div>
         </div>
