@@ -42,7 +42,101 @@
             </div>
           </div>
 
-          <a href="#" class="stretched-link"></a>
+          <a
+            href="{{url_for('members.profile', member_id=member.value.id)}}"
+            class="stretched-link"
+          ></a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endmacro %} {% macro contact_info(contacts) %} {% for contact in contacts %}
+
+<div class="col-sm-6 mb-4">
+  <h6 class="fw-bold text-dark">
+    {% if contact.isWebAddress %}
+    <i class="bi bi-globe me-2"></i> {% else %}
+    <i class="bi bi-building me-2"></i> {% endif %} {{ contact.type }}
+  </h6>
+
+  {% if contact.isWebAddress %}
+  <p class="mb-0">
+    <a href="{{ contact.line1 }}" target="_blank" class="text-decoration-none">
+      {{ contact.line1 }}
+      <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.8rem"></i>
+    </a>
+  </p>
+
+  {% else %} {% if contact.line1 %}
+  <p class="mb-0 small text-muted">{{ contact.line1 }}</p>
+  {% endif %} {% if contact.line2 %}
+  <p class="mb-0 small text-muted">{{ contact.line2 }}</p>
+  {% endif %} {% if contact.line3 %}
+  <p class="mb-0 small text-muted">{{ contact.line3 }}</p>
+  {% endif %} {% if contact.postcode %}
+  <p class="mb-0 small text-muted">{{ contact.postcode }}</p>
+  {% endif %} {% if contact.phone %}
+  <p class="mb-0 mt-2 small">
+    <i class="bi bi-telephone me-2"></i>{{ contact.phone }}
+  </p>
+  {% endif %} {% if contact.email %}
+  <p class="mb-0 mt-2 small">
+    <a href="mailto:{{ contact.email }}" class="text-decoration-none">
+      <i class="bi bi-envelope me-2"></i>{{ contact.email }}
+    </a>
+  </p>
+  {% endif %} {% endif %}
+</div>
+{% endfor %} {% endmacro %} {% macro committee_memberships(committees) %}
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+
+<div class="container my-4 px-2">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 px-0">
+      <ul class="list-group shadow-sm">
+        {% for member in members %}
+        <li
+          class="list-group-item list-group-item-action p-3 position-relative border-bottom bg-white"
+        >
+          <div class="d-flex flex-row align-items-center text-start">
+            <div class="flex-shrink-0 me-3 me-sm-4">
+              <img
+                src="{{ member.value.thumbnailUrl }}"
+                class="rounded-circle border shadow-sm"
+                width="90"
+                height="90"
+                style="object-fit: cover"
+              />
+            </div>
+
+            <div class="flex-grow-1 w-100">
+              <h3 class="h5 mb-1 fw-bold text-dark">
+                {{ member.value.nameDisplayAs }}
+              </h3>
+              <p class="mb-1 text-muted small">
+                <i class="bi bi-people-fill me-1"></i> {{
+                member.value.latestParty.name }}
+              </p>
+              <p class="mb-0 text-muted small">
+                <i class="bi bi-geo-alt-fill me-1"></i> {{
+                member.value.latestHouseMembership.membershipFrom }}
+              </p>
+            </div>
+
+            <div class="ms-auto text-primary">
+              <i class="bi bi-arrow-right fs-4"></i>
+            </div>
+          </div>
+
+          <a
+            href="{{url_for('members.profile', member_id=member.value.id)}}"
+            class="stretched-link"
+          ></a>
         </li>
         {% endfor %}
       </ul>

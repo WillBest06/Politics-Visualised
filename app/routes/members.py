@@ -37,3 +37,15 @@ def search():
                                    total_pages=total_pages)
 
     return render_template('members/search.html', form=form)
+
+@members_bp.route('/profile/<int:member_id>', methods=['GET'])
+def profile(member_id):
+
+    api_url = f'https://members-api.parliament.uk/api/Members/{member_id}'
+    member_data = requests.get(api_url).json()
+    synopsis = requests.get(api_url + "/Synopsis").json()
+    portrait = requests.get(api_url + "/PortraitUrl").json()
+    contact_info = requests.get(api_url + "/Contact").json()
+    biography = requests.get(api_url + "/Biography").json()
+    
+    return render_template('members/profile.html', member=member_data, contactInfo=contact_info, biography=biography, portrait=portrait, synopsis=synopsis)

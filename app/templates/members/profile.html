@@ -1,0 +1,114 @@
+{% extends "base.html" %} {% from "macros.html" import contact_info with context
+%} {% block title %}MP Profile - {{ member.value.nameDisplayAs |
+default('Profile') }}{% endblock %} {% block content %}
+<div class="container my-5 px-2">
+  <div class="row">
+    <div class="col-12 col-md-4 col-lg-3 text-center text-md-start mb-4">
+      <div
+        class="card border-0 shadow-sm bg-white sticky-top"
+        style="top: 2rem; z-index: 1"
+      >
+        <img
+          src="{{ portrait.value }}"
+          class="card-img-top img-fluid"
+          alt="{{ member.value.nameDisplayAs | default('MP Photo') }}"
+        />
+
+        <div class="card-body text-center">
+          <h4 class="card-title fw-bold text-dark">
+            {{ member.value.nameDisplayAs | default('MP Name') }}
+          </h4>
+          <span class="badge rounded-pill bg-primary mb-2 px-3 py-2">
+            {{ member.value.latestParty.name | default('Party') }}
+          </span>
+          <p class="text-muted small mb-0 mt-2">
+            <i class="bi bi-geo-alt-fill text-danger"></i>
+            {{ member.value.latestHouseMembership.membershipFrom }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-8 col-lg-9">
+      <div class="card border-0 shadow-sm mb-4 bg-white">
+        <div class="card-body p-4">
+          <h4 class="card-title text-primary border-bottom pb-2 mb-4">
+            Biographical Information
+          </h4>
+
+          <div class="row mb-3">
+            <p>{{synopsis.value}}</p>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 fw-bold text-muted">Status:</div>
+            <div class="col-sm-8">
+              {{
+              member.value.latestHouseMembership.membershipStatus.statusDescription
+              }}
+            </div>
+          </div>
+
+          <hr class="text-muted opacity-25" />
+
+          <div class="row mb-3">
+            <div class="col-sm-4 fw-bold text-muted">House Start Date:</div>
+            <div class="col-sm-8">
+              {{ member.value.latestHouseMembership.membershipStartDate |
+              default('N/A') }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm mb-4 bg-white">
+        <div class="card-body p-4">
+          <h4 class="card-title text-primary border-bottom pb-2 mb-4">
+            Contact Details
+          </h4>
+
+          <div class="row">{{ contact_info(contactInfo.value) }}</div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm bg-white mb-5">
+        <div class="card-body p-4">
+          <h4 class="card-title text-primary border-bottom pb-2 mb-4">
+            Recent Voting History
+          </h4>
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-0 py-3 border-bottom">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="pe-3">
+                  <h6 class="mb-1 fw-bold text-dark">
+                    Example Bill / Division Name
+                  </h6>
+                  <small class="text-muted">Date: 12 Oct 2024</small>
+                </div>
+                <span class="badge bg-success rounded-pill px-3 py-2 shadow-sm"
+                  >Aye</span
+                >
+              </div>
+            </li>
+
+            <li class="list-group-item px-0 py-3 border-bottom">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="pe-3">
+                  <h6 class="mb-1 fw-bold text-dark">
+                    Another Example Division
+                  </h6>
+                  <small class="text-muted">Date: 05 Oct 2024</small>
+                </div>
+                <span class="badge bg-danger rounded-pill px-3 py-2 shadow-sm"
+                  >No</span
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
