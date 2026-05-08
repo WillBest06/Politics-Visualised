@@ -1,6 +1,5 @@
 python3 -m venv venv &&
 source venv/bin/activate &&
-pip install pytest pytest-flask pytest-cov arrow Flask-Session &&
 pip install -r requirements.txt &&
 
 export FLASK_APP=app &&

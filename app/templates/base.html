@@ -82,29 +82,14 @@
                 <li class="nav-item">
                   <a class="nav-link px-3" href="/">Home</a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item">
                   <a
-                    class="nav-link dropdown-toggle px-3"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
+                    class="nav-link px-3"
+                    href="{{url_for('petitions.upload')}}"
+                    >Petitions</a
                   >
-                    Petitions
-                  </a>
-                  <ul class="dropdown-menu shadow border-0">
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="{{url_for('petitions.upload')}}"
-                        >Upload File</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">Saved Petitions</a>
-                    </li>
-                  </ul>
                 </li>
+
                 <li class="nav-item">
                   <a class="nav-link px-3" href="{{url_for('members.search')}}"
                     >MPs</a
@@ -118,6 +103,20 @@
     </header>
 
     <main class="container-xl flex-grow-1 p-3 p-md-4">
+      <section class="d-flex justify-content-center">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <div>{{ message }}</div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </section>
       {% block content %} {% endblock %}
     </main>
 
