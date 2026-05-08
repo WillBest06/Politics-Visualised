@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block title %} Search {% endblock %} {% block
+content %}
+<div class="row justify-content-center px-2">
+  <div class="col-12 col-md-10 col-lg-8 card p-3 p-md-4 shadow-sm">
+    <form method="GET" action="{{ url_for('members.search') }}">
+      <div class="mb-3 btn-group w-100" role="group">
+        {% for subfield in form.t %} {{ subfield(class="btn-check") }} {{
+        subfield.label(class="btn btn-outline-primary") }} {% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.q.label(class="form-label fw-bold", id="search-label") }} {{
+        form.q(class_="form-control form-control-lg", id="search-input") }}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 btn-lg">Search</button>
+    </form>
+  </div>
+</div>
+
+<div>{% block results_area %}{% endblock %}</div>
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const nameRadio = document.getElementById("t-0");
+    const locationRadio = document.getElementById("t-1");
+
+    const label = document.getElementById("search-label");
+    const input = document.getElementById("search-input");
+
+    function updateFields() {
+      if (locationRadio.checked) {
+        label.textContent = "Search by Location or Postcode";
+        input.placeholder = "e.g. TR1 3XX or Truro";
+      } else {
+        label.textContent = "Search by MP Name";
+        input.placeholder = "e.g. Keir Starmer";
+      }
+    }
+
+    updateFields();
+
+    if (nameRadio && locationRadio) {
+      nameRadio.addEventListener("change", updateFields);
+      locationRadio.addEventListener("change", updateFields);
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.querySelector("form");
+
+    searchForm.addEventListener("submit", function () {
+      const submitBtn = this.querySelector('button[type="submit"]');
+
+      submitBtn.innerHTML =
+        '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Searching...';
+
+      submitBtn.disabled = true;
+    });
+  });
+</script>
+{% endblock %}

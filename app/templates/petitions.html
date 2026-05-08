@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Petitions{% endblock %} {% block
 content %} {% if option == "upload" %}
 <div class="row justify-content-center">
-  <div class="col-md-6 card p-4 shadow-sm">
+  <div class="col-md-8 card p-4 shadow-sm">
     <form method="POST" enctype="multipart/form-data">
       {{ form.hidden_tag() }}
       <div class="mb-3">
@@ -26,7 +26,7 @@ content %} {% if option == "upload" %}
   <div class="row mb-5">
     <div class="col-12">
       <button
-        class="btn btn-outline-secondary dropdown-toggle"
+        class="btn btn-outline-primary dropdown-toggle"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#collapseDetails"

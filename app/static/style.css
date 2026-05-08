@@ -133,3 +133,47 @@ a.nostyle:visited {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
+/* party colours */
+
+.party-conservative {
+  background-color: #2175d9 !important;
+  color: white !important;
+}
+
+.party-labour {
+  background-color: #e4003b !important;
+  color: white !important;
+}
+
+.party-labour-co-op {
+  background: linear-gradient(135deg, #e4003b 50%, #3f1d70 50%) !important;
+  color: white !important;
+}
+
+.party-liberal-democrat {
+  background-color: #ff7f00 !important;
+  color: white !important;
+}
+
+.party-scottish-national-party {
+  background-color: #facd50 !important;
+  color: #333333 !important;
+}
+
+.party-green-party {
+  background-color: #58ab27 !important;
+  color: white !important;
+}
+
+.party-reform-uk {
+  background-color: #29dbc9 !important;
+  color: white !important;
+}
+
+/* fallback for smaller parties/speakers/peers */
+.party-independent,
+[class*="party-"] {
+  background-color: #6c757d;
+  color: white;
+}
