@@ -46,4 +46,19 @@ content %}
     }
   });
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.querySelector("form");
+
+    searchForm.addEventListener("submit", function () {
+      const submitBtn = this.querySelector('button[type="submit"]');
+
+      submitBtn.innerHTML =
+        '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Searching...';
+
+      submitBtn.disabled = true;
+    });
+  });
+</script>
 {% endblock %}

@@ -9,6 +9,9 @@ import requests_cache
 requests_cache.install_cache('parliament_api_cache', expire_after=86400)
 
 http_session = requests.Session()
+http_session.headers.update({
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+})
 
 members_bp = Blueprint("members", __name__)
 
@@ -58,20 +61,22 @@ def profile(member_id):
             return {}
 
     # start_time = time.time()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
         future_member = executor.submit(fetch_json, api_url)
         future_synopsis = executor.submit(fetch_json, api_url + "/Synopsis")
         future_portrait = executor.submit(fetch_json, api_url + "/PortraitUrl")
         future_contact = executor.submit(fetch_json, api_url + "/Contact")
         future_bio = executor.submit(fetch_json, api_url + "/Biography")
+        future_voting_history = executor.submit(fetch_json, api_url + "/Voting?house=1&page=1")
 
         member_data = future_member.result()
         synopsis = future_synopsis.result()
         portrait = future_portrait.result()
         contact_info = future_contact.result()
         biography = future_bio.result()
+        voting_history = future_voting_history.result().get('items', [])
 
         # end_time = time.time()
         # print(f"Fetched all JSON in {end_time - start_time:.2f} seconds")
     
-    return render_template('members/profile.html', member=member_data, contactInfo=contact_info, biography=biography, portrait=portrait, synopsis=synopsis)
+    return render_template('members/profile.html', member=member_data, contactInfo=contact_info, biography=biography, portrait=portrait, synopsis=synopsis, votingHistory=voting_history)

@@ -143,4 +143,87 @@
     </div>
   </div>
 </div>
-{% endmacro %}
+{% endmacro %} {% macro voting_history(recent_votes) %} {% if not recent_votes
+%}
+<p class="text-muted mb-0">No recent voting history found.</p>
+{% else %}
+
+<ul class="list-group list-group-flush">
+  {% for vote in recent_votes[:5] %}
+  <li class="list-group-item px-0 py-3 border-bottom">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="pe-3">
+        <h6 class="mb-1 fw-bold text-dark">{{ vote.value.title }}</h6>
+        <small class="text-muted text-uppercase" style="font-size: 0.75rem">
+          <i class="bi bi-calendar3 me-1"></i> {{ vote.value.date | truncate(10,
+          True, '') }}
+        </small>
+      </div>
+      <div>
+        {% if vote.value.inAffirmativeLobby %}
+        <span class="badge bg-success rounded-pill px-3 py-2 shadow-sm"
+          >Aye</span
+        >
+        {% elif vote.value.inNegativeLobby %}
+        <span class="badge bg-danger rounded-pill px-3 py-2 shadow-sm">No</span>
+        {% else %}
+        <span class="badge bg-secondary rounded-pill px-3 py-2 shadow-sm"
+          >No Vote</span
+        >
+        {% endif %}
+      </div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+{% if recent_votes|length > 5 %}
+
+<div class="collapse" id="hiddenVotesDrawer">
+  <ul class="list-group list-group-flush">
+    {% for vote in recent_votes[5:] %}
+    <li class="list-group-item px-0 py-3 border-bottom">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="pe-3">
+          <h6 class="mb-1 fw-bold text-dark">{{ vote.value.title }}</h6>
+          <small class="text-muted text-uppercase" style="font-size: 0.75rem">
+            <i class="bi bi-calendar3 me-1"></i> {{ vote.value.date |
+            truncate(10, True, '') }}
+          </small>
+        </div>
+        <div>
+          {% if vote.value.inAffirmativeLobby %}
+          <span class="badge bg-success rounded-pill px-3 py-2 shadow-sm"
+            >Aye</span
+          >
+          {% elif vote.value.inNegativeLobby %}
+          <span class="badge bg-danger rounded-pill px-3 py-2 shadow-sm"
+            >No</span
+          >
+          {% else %}
+          <span class="badge bg-secondary rounded-pill px-3 py-2 shadow-sm"
+            >No Vote</span
+          >
+          {% endif %}
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="text-center mt-3 pt-2">
+  <button
+    class="btn btn-outline-primary btn-sm rounded-pill px-4"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#hiddenVotesDrawer"
+    aria-expanded="false"
+    aria-controls="hiddenVotesDrawer"
+    id="toggleVotesBtn"
+  >
+    Show More Votes <i class="bi bi-chevron-down ms-1"></i>
+  </button>
+</div>
+
+{% endif %} {% endif %} {% endmacro %}

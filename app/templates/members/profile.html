@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% from "macros.html" import contact_info with context
-%} {% block title %}MP Profile - {{ member.value.nameDisplayAs |
-default('Profile') }}{% endblock %} {% block content %}
+%} {% from "macros.html" import voting_history with context %} {% block title
+%}MP Profile - {{ member.value.nameDisplayAs | default('Profile') }}{% endblock
+%} {% block content %}
 <div class="container my-5 px-2">
   <div class="row">
     <div class="col-12 col-md-4 col-lg-3 text-center text-md-start mb-4">
@@ -37,15 +38,17 @@ default('Profile') }}{% endblock %} {% block content %}
           </h4>
 
           <div class="row mb-3">
-            <p>{{synopsis.value}}</p>
+            <p>{{synopsis.value | safe}}</p>
           </div>
 
           <div class="row mb-3">
             <div class="col-sm-4 fw-bold text-muted">Status:</div>
             <div class="col-sm-8">
-              {{
+              {% if
               member.value.latestHouseMembership.membershipStatus.statusDescription
-              }}
+              %} {{
+              member.value.latestHouseMembership.membershipStatus.statusDescription
+              }} {% else %} Inactive {% endif %}
             </div>
           </div>
 
@@ -67,7 +70,12 @@ default('Profile') }}{% endblock %} {% block content %}
             Contact Details
           </h4>
 
-          <div class="row">{{ contact_info(contactInfo.value) }}</div>
+          <div class="row">
+            {% if contactInfo.value %} {{ contact_info(contactInfo.value) }} {%
+            else %}
+            <p>No contact details available</p>
+            {% endif %}
+          </div>
         </div>
       </div>
 
@@ -77,38 +85,31 @@ default('Profile') }}{% endblock %} {% block content %}
             Recent Voting History
           </h4>
 
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item px-0 py-3 border-bottom">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="pe-3">
-                  <h6 class="mb-1 fw-bold text-dark">
-                    Example Bill / Division Name
-                  </h6>
-                  <small class="text-muted">Date: 12 Oct 2024</small>
-                </div>
-                <span class="badge bg-success rounded-pill px-3 py-2 shadow-sm"
-                  >Aye</span
-                >
-              </div>
-            </li>
-
-            <li class="list-group-item px-0 py-3 border-bottom">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="pe-3">
-                  <h6 class="mb-1 fw-bold text-dark">
-                    Another Example Division
-                  </h6>
-                  <small class="text-muted">Date: 05 Oct 2024</small>
-                </div>
-                <span class="badge bg-danger rounded-pill px-3 py-2 shadow-sm"
-                  >No</span
-                >
-              </div>
-            </li>
-          </ul>
+          {{ voting_history(votingHistory) }}
         </div>
       </div>
     </div>
   </div>
 </div>
-{% endblock %}
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const hiddenVotesDrawer = document.getElementById("hiddenVotesDrawer");
+    const toggleVotesBtn = document.getElementById("toggleVotesBtn");
+
+    if (hiddenVotesDrawer && toggleVotesBtn) {
+      // When the collapse opens
+      hiddenVotesDrawer.addEventListener("show.bs.collapse", function () {
+        toggleVotesBtn.innerHTML =
+          'Show Less Votes <i class="bi bi-chevron-up ms-1"></i>';
+      });
+
+      // When the collapse closes
+      hiddenVotesDrawer.addEventListener("hide.bs.collapse", function () {
+        toggleVotesBtn.innerHTML =
+          'Show More Votes <i class="bi bi-chevron-down ms-1"></i>';
+      });
+    }
+  });
+</script>
+{% endblock%}
