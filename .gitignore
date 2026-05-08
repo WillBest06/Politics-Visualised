@@ -1,0 +1,6 @@
+.env
+app/flask_session_data/
+venv/
+__pycache__/
+*.pyc
+parliament_api_cache.sqlite
