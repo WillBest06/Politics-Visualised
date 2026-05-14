@@ -1,7 +1,7 @@
-{% extends "base.html" %} {% from "macros.html" import contact_info with context
-%} {% from "macros.html" import voting_history with context %} {% block title
-%}MP Profile - {{ member.value.nameDisplayAs | default('Profile') }}{% endblock
-%} {% block content %}
+{% extends "base.html" %} {% from "members/macros.html" import contact_info with
+context %} {% from "members/macros.html" import voting_history with context %}
+{% block title %}MP Profile - {{ member.value.nameDisplayAs | default('Profile')
+}}{% endblock %} {% block content %}
 <div class="container my-5 px-2">
   <div class="row">
     <div class="col-12 col-md-4 col-lg-3 text-center text-md-start mb-4">

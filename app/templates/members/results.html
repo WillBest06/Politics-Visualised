@@ -1,6 +1,6 @@
-{% extends "members/search.html" %} {% from "macros.html" import members_list
-with context %} {% block title %} Results {% endblock %} {% block results_area
-%}
+{% extends "members/search.html" %} {% from "members/macros.html" import
+members_list with context %} {% block title %} Results {% endblock %} {% block
+results_area %}
 <div class="row justify-content-center mb-2 mt-4 px-2">
   <div class="col-12 col-md-10 col-lg-8 text-center">
     {% if resultContext %}

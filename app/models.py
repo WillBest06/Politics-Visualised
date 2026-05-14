@@ -57,4 +57,24 @@ class Petition(db.Model):
         return self
 
     def __repr__(self):
-        return f'<Post {self.id} {self.title!r}>'
+        return f'<Petition {self.id} {self.title!r}>'
+
+class FavouriteMP(db.Model):
+    __tablename__    = 'Favourite_mp'
+    id               = db.Column(db.Integer, primary_key=True)
+    user_id          = db.Column(db.Integer, db.ForeignKey('users.id', name='fk_news_user_id'), nullable=False)
+    member_id        = db.Column(db.Integer, nullable=False)
+
+    user = db.relationship(
+                'User',
+                back_populates='posts',
+                lazy=True,
+            )
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
+    def __repr__(self):
+        return f'<Favourite MP id {self.id} {self.title!r}>'

@@ -2,11 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, session
 
 petitions_bp = Blueprint("petitions", __name__)
 
-@petitions_bp.route('/petitions')
-def options():
-    return render_template('petitions.html', option=None)
-
-@petitions_bp.route('/petitions/upload', methods=['GET', 'POST'])
+@petitions_bp.route('/upload', methods=['GET', 'POST'])
 def upload():
     from ..services.json_parser import main_parser
     from .forms.petition_upload import JsonUploadForm
@@ -23,18 +19,18 @@ def upload():
 
         return redirect(url_for('petitions.visualise', petition_id=petition_id))
 
-    return render_template('petitions.html', option="upload", form=form)
+    return render_template('petitions/base.html', option="upload", form=form)
 
-@petitions_bp.route('/petitions/visualise')
+@petitions_bp.route('/visualise')
 def visualise():
     data = session.get('petition_data')
     
     if not data:
         return redirect(url_for('petitions.upload'))
         
-    return render_template('petitions.html', option="visualise", data=data)
+    return render_template('petitions/base.html', option="visualise", data=data)
 
-# @petitions_bp.route('/petitions/save')
+# @petitions_bp.route('/save')
 # @login_required
 # def save():
 #     pass
