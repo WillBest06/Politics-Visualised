@@ -6,6 +6,9 @@
 
     <title>{% block title %} Politics: Visualised {% endblock %}</title>
 
+    {% from "macros.html" import signed_out_dropdown with context %}{% from
+    "macros.html" import signed_in_dropdown with context %}
+
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
 
     <!-- Fonts -->
@@ -35,7 +38,9 @@
   <body class="min-vh-100 d-flex flex-column bg-light">
     <header class="sticky-top bg-white border-bottom shadow-sm">
       <div class="container-xl d-lg-flex justify-content-end py-1 d-none">
-        <p>Welcome back</p>
+        {% if current_user.is_authenticated %}
+        <p class="mb-0">Welcome back, {{current_user.username}}</p>
+        {{signed_in_dropdown()}} {% else %} {{signed_out_dropdown()}} {% endif%}
       </div>
 
       <nav
@@ -63,7 +68,7 @@
                 class="navbar-brand m-0 order-2 flex-grow-1 text-center"
                 href="{{url_for('home.home')}}"
               >
-                <h1 class="nav-title mb-0">
+                <h1 class="nav-title mb-0 user-select-none">
                   <span class="T-N-R-I">Politics: </span>
                   <span class="erica-one-regular diagonal-gradient"
                     >Visualised</span
@@ -84,20 +89,21 @@
                 class="navbar-nav mx-auto border-top pt-2 pt-lg-0 border-lg-0 w-100 justify-content-center"
               >
                 <li class="nav-item">
-                  <a class="nav-link px-3" href="{{url_for('home.home')}}"
+                  <a
+                    class="nav-link px-3 user-select-none"
+                    href="{{url_for('home.home')}}"
                     >Home</a
                   >
                 </li>
                 <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle px-3"
-                    href="#"
+                  <div
+                    class="nav-link dropdown-toggle px-3 user-select-none"
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     Petitions
-                  </a>
+                  </div>
                   <ul class="dropdown-menu shadow border-0">
                     <li>
                       <a
@@ -107,14 +113,39 @@
                       >
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">Saved Petitions</a>
+                      <a
+                        class="dropdown-item"
+                        href="{{url_for('favourites.petitions')}}"
+                        >Favourited Petitions</a
+                      >
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link px-3" href="{{url_for('members.search')}}"
-                    >MPs</a
+                <li class="nav-item dropdown">
+                  <div
+                    class="nav-link dropdown-toggle px-3 user-select-none"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
                   >
+                    MPs
+                  </div>
+                  <ul class="dropdown-menu shadow border-0">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="{{url_for('members.search')}}"
+                        >Search for an MP</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="{{url_for('favourites.members')}}"
+                        >Favourited MPs</a
+                      >
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>

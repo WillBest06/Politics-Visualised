@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, session
+from flask_login import login_required
 
 petitions_bp = Blueprint("petitions", __name__)
 

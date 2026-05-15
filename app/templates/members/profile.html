@@ -24,7 +24,6 @@ context %} {% from "members/macros.html" import voting_history with context %}
           <h4 class="card-title fw-bold text-dark">
             {{ member.value.nameDisplayAs }}
           </h4>
-
           <div class="mb-3">
             <span
               class="badge rounded-pill px-3 py-2 party-{{ member.value.latestParty.name | lower | replace(' ', '-') | replace('(', '') | replace(')', '') }}"
@@ -32,11 +31,27 @@ context %} {% from "members/macros.html" import voting_history with context %}
               {{ member.value.latestParty.name }}
             </span>
           </div>
-
           <p class="text-muted small mb-0 mt-2">
             <i class="bi bi-geo-alt-fill text-danger"></i>
             {{ member.value.latestHouseMembership.membershipFrom }}
           </p>
+
+          <div class="d-flex justify-content-center align-items-center mt-2">
+            <form
+              method="POST"
+              action="{{ url_for('members.save', member_id=member.value.id) }}"
+            >
+              {{ form.hidden_tag() }} {% if is_favourited %}
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-star-fill me-2"></i>Favourited
+              </button>
+              {% else %}
+              <button type="submit" class="btn btn-outline-primary">
+                <i class="bi bi-star me-2"></i>Favourite
+              </button>
+              {% endif %}
+            </form>
+          </div>
         </div>
       </div>
     </div>

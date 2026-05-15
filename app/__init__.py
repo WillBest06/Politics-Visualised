@@ -44,9 +44,13 @@ def create_app(test_config=None):
     from .routes.petitions import petitions_bp
     from .routes.home import home_bp
     from .routes.members import members_bp
+    from .routes.favourites import favourites_bp
+    from .routes.settings import settings_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(petitions_bp, url_prefix='/petitions')
     app.register_blueprint(home_bp)
     app.register_blueprint(members_bp, url_prefix='/members')
+    app.register_blueprint(favourites_bp, url_prefix='/favourites')
+    app.register_blueprint(settings_bp, url_prefix='/settings')
 
     return app

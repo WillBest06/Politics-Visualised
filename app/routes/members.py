@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, session, request
+from flask import Blueprint, render_template, redirect, url_for, session, request, flash
+from flask_login import login_required, current_user
+from app.models import db, FavouriteMP
 import requests
 import math
-import time
 import concurrent.futures
 import requests_cache
 
@@ -58,9 +59,8 @@ def profile(member_id):
             return http_session.get(url, timeout=5).json()
         except requests.exceptions.RequestException as e:
             print(f"Could not fetch {url}: {e}")
-            return {}
+            return 
 
-    # start_time = time.time()
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
         future_member = executor.submit(fetch_json, api_url)
         future_synopsis = executor.submit(fetch_json, api_url + "/Synopsis")
@@ -76,7 +76,38 @@ def profile(member_id):
         biography = future_bio.result()
         voting_history = future_voting_history.result().get('items', [])
 
-        # end_time = time.time()
-        # print(f"Fetched all JSON in {end_time - start_time:.2f} seconds")
+    from .forms.favourite.FavouriteMPForm import FavouriteMPForm
+    form = FavouriteMPForm()
+
+    is_favourited = False
+    if current_user.is_authenticated:
+        is_favourited = db.session.execute(
+            db.select(FavouriteMP).filter_by(user_id=current_user.id, member_id=member_id)
+        ).scalar() is not None
+
+    return render_template('members/profile.html', member=member_data, contactInfo=contact_info, biography=biography, portrait=portrait, synopsis=synopsis, votingHistory=voting_history, is_favourited=is_favourited, form=form)
+
+@members_bp.route('/save/<int:member_id>', methods=['POST'])
+@login_required
+def save(member_id):
+
+    from .forms.favourite.FavouriteMPForm import FavouriteMPForm
+
+    form = FavouriteMPForm()
     
-    return render_template('members/profile.html', member=member_data, contactInfo=contact_info, biography=biography, portrait=portrait, synopsis=synopsis, votingHistory=voting_history)
+    if form.validate_on_submit():
+        already_favourited = db.session.execute(
+            db.select(FavouriteMP).filter_by(user_id=current_user.id, member_id=member_id)
+        ).scalar()
+
+        if already_favourited:
+            db.session.delete(already_favourited)
+            db.session.commit()
+            flash('MP removed from favourites!', "info")
+        else:
+            favourite_mp = FavouriteMP(user_id=current_user.id, member_id=member_id)
+            db.session.add(favourite_mp)
+            db.session.commit()
+            flash('MP saved to your favourites!', "success")
+
+    return redirect(request.referrer or url_for('members.profile', member_id=member_id))

@@ -3,6 +3,7 @@ content %}
 <div class="row justify-content-center px-2">
   <div class="col-12 col-md-10 col-lg-8 card p-3 p-md-4 shadow-sm">
     <form method="GET" action="{{ url_for('members.search') }}">
+      {{ form.hidden_tag() }}
       <div class="mb-3 btn-group w-100" role="group">
         {% for subfield in form.t %} {{ subfield(class="btn-check") }} {{
         subfield.label(class="btn btn-outline-primary") }} {% endfor %}

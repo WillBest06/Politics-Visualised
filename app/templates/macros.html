@@ -1,7 +1,7 @@
 {% macro signed_out_dropdown() %}
-<div>
+<div class="d-flex">
   <i class="bi bi-person-circle me-1"></i>
-  <a class="dropdown-item" href="{{url_for('auth.signin')}}">Sign in</a>
+  <a href="{{url_for('auth.signin')}}">Sign in</a>
 </div>
 {% endmacro %} {% macro signed_in_dropdown() %}
 <div class="dropdown">
@@ -21,7 +21,7 @@
       >
     </li>
     <li>
-      <a class="dropdown-item text-danger" href="{{url_for('auth.sign-out')}}"
+      <a class="dropdown-item text-danger" href="{{url_for('auth.signout')}}"
         >Sign out</a
       >
     </li>
