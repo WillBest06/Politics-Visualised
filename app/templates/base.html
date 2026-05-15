@@ -34,10 +34,14 @@
   </head>
   <body class="min-vh-100 d-flex flex-column bg-light">
     <header class="sticky-top bg-white border-bottom shadow-sm">
+      <div class="container-xl d-lg-flex justify-content-end py-1 d-none">
+        <p>Welcome back</p>
+      </div>
+
       <nav
-        class="navbar navbar-expand-lg bg-white border-bottom sticky-top shadow-sm py-3"
+        class="navbar navbar-expand-lg bg-white border-bottom shadow-sm py-0"
       >
-        <div class="container-xl">
+        <div class="container-xl py-2">
           <div class="d-flex flex-column w-100">
             <!-- Responsive Mobile layout -->
             <div
@@ -57,7 +61,7 @@
 
               <a
                 class="navbar-brand m-0 order-2 flex-grow-1 text-center"
-                href="/"
+                href="{{url_for('home.home')}}"
               >
                 <h1 class="nav-title mb-0">
                   <span class="T-N-R-I">Politics: </span>
@@ -70,17 +74,19 @@
               <button
                 class="btn btn-sm btn-outline-secondary d-lg-none order-3"
               >
-                <i class="bi bi-person"></i>
+                <i class="bi bi-person-circle"></i>
               </button>
             </div>
 
             <!-- Desktop layout -->
             <div class="collapse navbar-collapse order-4" id="mainNav">
               <ul
-                class="navbar-nav mx-auto mt-3 border-top pt-2 pt-lg-0 border-lg-0 w-100 justify-content-center"
+                class="navbar-nav mx-auto border-top pt-2 pt-lg-0 border-lg-0 w-100 justify-content-center"
               >
                 <li class="nav-item">
-                  <a class="nav-link px-3" href="/">Home</a>
+                  <a class="nav-link px-3" href="{{url_for('home.home')}}"
+                    >Home</a
+                  >
                 </li>
                 <li class="nav-item dropdown">
                   <a

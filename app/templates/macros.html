@@ -1,0 +1,30 @@
+{% macro signed_out_dropdown() %}
+<div>
+  <i class="bi bi-person-circle me-1"></i>
+  <a class="dropdown-item" href="{{url_for('auth.signin')}}">Sign in</a>
+</div>
+{% endmacro %} {% macro signed_in_dropdown() %}
+<div class="dropdown">
+  <a
+    class="nav-link dropdown-toggle px-3 small text-muted"
+    href="#"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <i class="bi bi-person-circle me-1"></i> Account
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+    <li>
+      <a class="dropdown-item" href="{{url_for('settings.settings')}}"
+        >Settings</a
+      >
+    </li>
+    <li>
+      <a class="dropdown-item text-danger" href="{{url_for('auth.sign-out')}}"
+        >Sign out</a
+      >
+    </li>
+  </ul>
+</div>
+{% endmacro %}

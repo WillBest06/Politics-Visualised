@@ -177,3 +177,15 @@ a.nostyle:visited {
   background-color: #6c757d;
   color: white;
 }
+
+.auth-form {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  margin: auto;
+}
+
+.nav-login-link {
+  justify-self: end;
+  align-self: center;
+}
