@@ -31,8 +31,9 @@ class User(UserMixin, db.Model):
         return self
 
 class SavedPetition(db.Model):
-    __tablename__    = 'saved_petition'
-    id               = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'saved_petition'
+    id               = db.Column(db.Integer, primary_key=True) 
+    petition_id      = db.Column(db.Integer, nullable=False)
     creation_date    = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     title            = db.Column(db.String(100), nullable=False)
     details          = db.Column(db.Text, nullable=False)

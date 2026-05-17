@@ -1,0 +1,34 @@
+{% macro petition_list(petitions) %}
+<div class="container my-4 px-2">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 px-0">
+      <ul class="list-group shadow-sm">
+        {% for petition in petitions %}
+        <li
+          class="list-group-item list-group-item-action p-3 position-relative border-bottom bg-white"
+        >
+          <div class="d-flex flex-row align-items-center text-start">
+            <div class="flex-grow-1 w-100">
+              <h3 class="h5 mb-1 fw-bold text-dark">{{ petition.title }}</h3>
+              <p class="mb-0 text-muted small">
+                <i class="bi bi-calendar3 me-1"></i>
+                Saved on: {{ petition.creation_date.strftime('%d %b %Y') }}
+              </p>
+            </div>
+
+            <div class="ms-auto text-primary">
+              <i class="bi bi-arrow-right fs-4"></i>
+            </div>
+          </div>
+
+          <a
+            href="{{ url_for('petitions.visualise_saved', petition_id=petition.petition_id) }}"
+            class="stretched-link"
+          ></a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endmacro %}

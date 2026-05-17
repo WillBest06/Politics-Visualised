@@ -1,4 +1,4 @@
-{% macro petition_visualisation(data) %}
+{% macro petition_visualisation(data, is_saved) %}
 <div class="container-fluid py-4">
   <!-- Petition title and background -->
   <div class="row mb-4">
@@ -10,7 +10,18 @@
 
   <!-- More details -->
   <div class="row mb-5">
-    <div class="col-12">
+    <form class="col-2" method="POST" action="{{ url_for('petitions.save') }}">
+      {{ form.hidden_tag() }} {% if is_saved %}
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-bookmark-check-fill me-2"></i>Saved
+      </button>
+      {% else %}
+      <button type="submit" class="btn btn-outline-primary">
+        <i class="bi bi-bookmark-plus me-2"></i>Save Petition
+      </button>
+      {% endif %}
+    </form>
+    <div class="col-10">
       <button
         class="btn btn-outline-primary dropdown-toggle"
         type="button"

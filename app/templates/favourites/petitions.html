@@ -1,1 +1,9 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% from "favourites/macros.html" import petition_list
+with context %} {% block content %}
+<div class="container mt-4">
+  <h1 class="text-center mb-4">Your saved Petitions</h1>
+  {% if petitions %} {{ petition_list(petitions) }} {% else %}
+  <p class="text-muted text-center">You have not favourited any petitions!</p>
+  {% endif %}
+</div>
+{% endblock %}
